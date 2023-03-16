@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 // import interfaces
@@ -12,29 +13,33 @@ function User({ user }: UserProps) {
   const { id, imageUrl, lastName, name, prefix, title } = user;
 
   return (
-    <Card>
-      <CardContent>
-        <Image src={`${imageUrl}?id=${id}`} alt={name} />
-        <DescriptionBox>
-          <FullName>{prefix + " " + name + " " + lastName}</FullName>
-          <Title>{title}</Title>
-        </DescriptionBox>
-      </CardContent>
-      {/*  */}
-      {/* {isLoading && <Loading>Loading...</Loading>}
-      {!isLoading && hasMore && <p>Scroll down to load more</p>}
-      {!isLoading && !hasMore && <Loading>No more users to load</Loading>} */}
-    </Card>
+    <CardLink to={`/user/${id}`}>
+      <Card>
+        <CardContent>
+          <Image src={`${imageUrl}?id=${id}`} alt={name} />
+          <DescriptionBox>
+            <FullName>{prefix + " " + name + " " + lastName}</FullName>
+            <Title>{title}</Title>
+          </DescriptionBox>
+        </CardContent>
+      </Card>
+    </CardLink>
   );
 }
 
 export default User;
 
-const Card = styled.div`
+const CardLink = styled(Link)`
   width: 50%;
   @media screen and (min-width: 1000px) {
     width: 25%;
   }
+  color: black;
+  text-decoration: none;
+`;
+
+const Card = styled.div`
+  width: 100%;
 `;
 
 const CardContent = styled.div`

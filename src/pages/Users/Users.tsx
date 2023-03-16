@@ -31,8 +31,8 @@ function Users() {
       .get(
         `http://sweeftdigital-intern.eu-central-1.elasticbeanstalk.com/user/${page}/${SIZE}`
       )
-      .then((res) => {
-        setUsers([...users, ...res.data.list]);
+      .then(async (res) => {
+        await setUsers([...users, ...res.data.list]);
         setHasMore(res.data.pagination.nextPage !== null);
         setIsLoading(false);
       })

@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import styled, { createGlobalStyle } from "styled-components";
+import { createGlobalStyle } from "styled-components";
 
 // reset css and global styles
 const GlobalStyles = createGlobalStyle`
@@ -14,8 +14,7 @@ const GlobalStyles = createGlobalStyle`
   del, dfn, em, img, ins, kbd, q, s, samp,
   small, strike, strong, sub, sup, tt, var,
   b, u, i, center,
-  dl, dt, dd, ol, ul, li,
-  fieldset, form, label, legend,
+  dl, dt, dd, ol, ul, li, form, label,
   table, caption, tbody, tfoot, thead, tr, th, td,
   article, aside, canvas, details, embed, 
   figure, figcaption, footer, header, hgroup, 
@@ -71,18 +70,3 @@ function App() {
 }
 
 export default App;
-
-const Container = styled.div`
-  background-color: red;
-  height: 500px;
-`;
-
-const Loading = styled.p`
-  font-size: 50px;
-  color: red;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%);
-  z-index: 99999;
-`;
