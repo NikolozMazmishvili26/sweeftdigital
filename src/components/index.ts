@@ -1,4 +1,4 @@
 export * from "./Loading";
-export * from "./Users";
+export * from "./shared";
 export * from "./UniqueUser";
-export * from "./Friends";
+export * from "./shared";

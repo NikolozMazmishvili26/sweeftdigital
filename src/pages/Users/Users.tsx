@@ -2,11 +2,13 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import styled from "styled-components";
 
+// import interfaces
+import { breadcrumbsProps } from "../../App";
+
 // import components
 import { Loading, User } from "../../components";
 
 //
-const PAGE_NUMBER = 1;
 const SIZE = 20;
 
 export interface UsersProps {
@@ -18,10 +20,21 @@ export interface UsersProps {
   imageUrl: string;
 }
 
-function Users() {
+interface UsersComponentProps {
+  page: number;
+  setPage: React.Dispatch<React.SetStateAction<number>>;
+  breadcrumbs: breadcrumbsProps[];
+  setBreadcrumbs: React.Dispatch<React.SetStateAction<breadcrumbsProps[]>>;
+}
+
+function Users({
+  page,
+  setPage,
+  breadcrumbs,
+  setBreadcrumbs,
+}: UsersComponentProps) {
   //
   const [users, setUsers] = useState<UsersProps[]>([]);
-  const [page, setPage] = useState(PAGE_NUMBER);
   const [isLoading, setIsLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
 
@@ -31,8 +44,8 @@ function Users() {
       .get(
         `http://sweeftdigital-intern.eu-central-1.elasticbeanstalk.com/user/${page}/${SIZE}`
       )
-      .then(async (res) => {
-        await setUsers([...users, ...res.data.list]);
+      .then((res) => {
+        setUsers([...users, ...res.data.list]);
         setHasMore(res.data.pagination.nextPage !== null);
         setIsLoading(false);
       })
@@ -59,7 +72,14 @@ function Users() {
   return (
     <Container>
       {users.map((user) => {
-        return <User key={user.id} user={user} />;
+        return (
+          <User
+            key={user.id}
+            user={user}
+            breadcrumbs={breadcrumbs}
+            setBreadcrumbs={setBreadcrumbs}
+          />
+        );
       })}
       {isLoading ? <Loading /> : null}
     </Container>
@@ -68,7 +88,7 @@ function Users() {
 
 export default Users;
 
-const Container = styled.div`
+export const Container = styled.div`
   max-width: 1200px;
   width: 100%;
   margin: auto;

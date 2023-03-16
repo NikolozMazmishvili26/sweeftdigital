@@ -3,8 +3,12 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 
-// component
-import { InfoBox, Loading, AddressBox, Friends } from "../../components";
+// import component
+import { InfoBox, AddressBox, Friends } from "../../components";
+// import interface
+import { breadcrumbsProps } from "../../App";
+// import asset
+import loading from "../../assets/loading.gif";
 
 export interface UniqueUserProps {
   id: number;
@@ -31,7 +35,19 @@ export interface UniqueUserProps {
   };
 }
 
-function UniqueUser() {
+interface UniqueUserComponentProps {
+  page: number;
+  setPage: React.Dispatch<React.SetStateAction<number>>;
+  setBreadcrumbs: React.Dispatch<React.SetStateAction<breadcrumbsProps[]>>;
+  breadcrumbs: breadcrumbsProps[];
+}
+
+function UniqueUser({
+  page,
+  setPage,
+  breadcrumbs,
+  setBreadcrumbs,
+}: UniqueUserComponentProps) {
   //
   const params = useParams();
   const [isLoading, setIsLoading] = useState(false);
@@ -50,18 +66,22 @@ function UniqueUser() {
       .catch((error) => {
         console.log(error);
       });
-  }, []);
+  }, [params.userId]);
 
   if (isLoading || !user) {
     // Check if `user` is null before rendering
-    return <Loading />;
+    return (
+      <LoadingContainer>
+        <LoadingGif src={loading} alt="loading" />
+      </LoadingContainer>
+    );
   }
 
   return (
     <Container>
       <Header>
         <ImageBox>
-          <Image src={`${user.imageUrl}?v=${params.userId}`} alt="user" />
+          <Image src={`${user.imageUrl}?id=${params.userId}`} alt="user" />
         </ImageBox>
         {/* InfoBox Component */}
         <InfoBox user={user} />
@@ -69,7 +89,13 @@ function UniqueUser() {
         <AddressBox user={user} />
       </Header>
       {/* Friends Component */}
-      <Friends />
+      <Friends
+        userId={params.userId}
+        page={page}
+        setPage={setPage}
+        breadcrumbs={breadcrumbs}
+        setBreadcrumbs={setBreadcrumbs}
+      />
     </Container>
   );
 }
@@ -81,13 +107,13 @@ const Container = styled.div`
   width: 100%;
   margin: auto;
   border: 1px solid #ccc;
-  padding: 20px;
 `;
 
 const Header = styled.div`
   display: flex;
   flex-direction: column;
   align-items: unset;
+  padding: 20px;
 
   @media screen and (min-width: 990px) {
     flex-direction: row;
@@ -110,3 +136,13 @@ const Image = styled.img`
     width: auto;
   }
 `;
+
+const LoadingContainer = styled.div`
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const LoadingGif = styled.img``;

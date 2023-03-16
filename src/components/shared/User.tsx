@@ -2,21 +2,36 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 // import interfaces
+import { breadcrumbsProps } from "../../App";
+
+// import interfaces
 import { UsersProps } from "../../pages/Users/Users";
 
 interface UserProps {
   user: UsersProps;
+  breadcrumbs: breadcrumbsProps[];
+  setBreadcrumbs: React.Dispatch<React.SetStateAction<breadcrumbsProps[]>>;
 }
 
-function User({ user }: UserProps) {
+function User({ user, breadcrumbs, setBreadcrumbs }: UserProps) {
   //
   const { id, imageUrl, lastName, name, prefix, title } = user;
 
+  const handleClick = () => {
+    setBreadcrumbs([
+      ...breadcrumbs,
+      {
+        name: user.prefix + " " + user.name + " " + user.lastName,
+        to: `/user/${user.id}`,
+      },
+    ]);
+  };
+
   return (
-    <CardLink to={`/user/${id}`}>
+    <CardLink to={`/user/${id}`} onClick={handleClick}>
       <Card>
         <CardContent>
-          <Image src={`${imageUrl}?id=${id}`} alt={name} />
+          <Image src={`${imageUrl}?id=${id}`} />
           <DescriptionBox>
             <FullName>{prefix + " " + name + " " + lastName}</FullName>
             <Title>{title}</Title>

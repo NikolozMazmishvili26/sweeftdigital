@@ -1,4 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useEffect } from "react";
+import { useState } from "react";
 import { createGlobalStyle } from "styled-components";
 
 // reset css and global styles
@@ -54,15 +56,51 @@ const GlobalStyles = createGlobalStyle`
   }  
 `;
 
+export interface breadcrumbsProps {
+  name: string;
+  to: string;
+}
+
 // import pages
 import { Users, UniqueUser } from "./pages";
 
+const PAGE_NUMBER = 1;
+
 function App() {
+  //
+  useEffect(() => {
+    document.cookie = "PLACEIMGSESS=value; SameSite=None; Secure";
+  }, []);
+
+  //
+  const [page, setPage] = useState(PAGE_NUMBER);
+  const [breadcrumbs, setBreadcrumbs] = useState<breadcrumbsProps[]>([]);
+
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Users />}></Route>
-        <Route path="/user/:userId" element={<UniqueUser />}></Route>
+        <Route
+          path="/"
+          element={
+            <Users
+              page={page}
+              setPage={setPage}
+              breadcrumbs={breadcrumbs}
+              setBreadcrumbs={setBreadcrumbs}
+            />
+          }
+        ></Route>
+        <Route
+          path="/user/:userId"
+          element={
+            <UniqueUser
+              page={page}
+              setPage={setPage}
+              setBreadcrumbs={setBreadcrumbs}
+              breadcrumbs={breadcrumbs}
+            />
+          }
+        ></Route>
       </Routes>
       <GlobalStyles />
     </BrowserRouter>
