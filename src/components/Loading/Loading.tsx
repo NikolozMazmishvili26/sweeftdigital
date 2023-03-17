@@ -17,8 +17,8 @@ export default Loading;
 const LoadingContainer = styled.div`
   margin: auto;
   left: 50%;
-  margin-top: 25px;
-  margin-bottom: 40px;
+  margin-top: 35px;
+  margin-bottom: 60px;
 `;
 
 const LoadingGif = styled.img``;

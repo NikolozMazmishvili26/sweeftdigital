@@ -28,17 +28,19 @@ function User({ user, breadcrumbs, setBreadcrumbs }: UserProps) {
   };
 
   return (
-    <CardLink to={`/user/${id}`} onClick={handleClick}>
-      <Card>
-        <CardContent>
-          <Image src={`${imageUrl}?id=${id}`} />
-          <DescriptionBox>
-            <FullName>{prefix + " " + name + " " + lastName}</FullName>
-            <Title>{title}</Title>
-          </DescriptionBox>
-        </CardContent>
-      </Card>
-    </CardLink>
+    <>
+      <CardLink to={`/user/${id}`} onClick={handleClick}>
+        <Card>
+          <CardContent>
+            <Image src={`${imageUrl}?id=${id}`} alt={name + " " + lastName} />
+            <DescriptionBox>
+              <FullName>{prefix + " " + name + " " + lastName}</FullName>
+              <Title>{title}</Title>
+            </DescriptionBox>
+          </CardContent>
+        </Card>
+      </CardLink>
+    </>
   );
 }
 

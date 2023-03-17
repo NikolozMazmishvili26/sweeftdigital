@@ -1,5 +1,4 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { useEffect } from "react";
 import { useState } from "react";
 import { createGlobalStyle } from "styled-components";
 
@@ -67,11 +66,6 @@ import { Users, UniqueUser } from "./pages";
 const PAGE_NUMBER = 1;
 
 function App() {
-  //
-  useEffect(() => {
-    document.cookie = "PLACEIMGSESS=value; SameSite=None; Secure";
-  }, []);
-
   //
   const [page, setPage] = useState(PAGE_NUMBER);
   const [breadcrumbs, setBreadcrumbs] = useState<breadcrumbsProps[]>([]);

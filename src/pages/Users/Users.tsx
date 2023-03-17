@@ -1,5 +1,4 @@
-import axios from "axios";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 
 // import interfaces
@@ -7,6 +6,9 @@ import { breadcrumbsProps } from "../../App";
 
 // import components
 import { Loading, User } from "../../components";
+
+// import infinite scroll
+import useInfiniteScroll from "../../Infinite Scroll/useInfiniteScroll";
 
 //
 const SIZE = 20;
@@ -27,6 +29,15 @@ interface UsersComponentProps {
   setBreadcrumbs: React.Dispatch<React.SetStateAction<breadcrumbsProps[]>>;
 }
 
+export interface DataProps {
+  id: number;
+  name: string;
+  lastName: string;
+  prefix: string;
+  title: string;
+  imageUrl: string;
+}
+
 function Users({
   page,
   setPage,
@@ -34,44 +45,24 @@ function Users({
   setBreadcrumbs,
 }: UsersComponentProps) {
   //
-  const [users, setUsers] = useState<UsersProps[]>([]);
+  const [data, setData] = useState<DataProps[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [hasMore, setHasMore] = useState(true);
+  //
+  useInfiniteScroll(
+    `http://sweeftdigital-intern.eu-central-1.elasticbeanstalk.com/user/${page}/${SIZE}`,
+    data,
+    setData,
+    setIsLoading,
+    isLoading,
+    page,
+    setPage
+  );
 
-  useEffect(() => {
-    setIsLoading(true);
-    axios
-      .get(
-        `http://sweeftdigital-intern.eu-central-1.elasticbeanstalk.com/user/${page}/${SIZE}`
-      )
-      .then((res) => {
-        setUsers([...users, ...res.data.list]);
-        setHasMore(res.data.pagination.nextPage !== null);
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, [page, hasMore]);
-
-  const handleScroll = () => {
-    if (isLoading || !hasMore) return;
-    if (
-      window.innerHeight + document.documentElement.scrollTop !==
-      document.documentElement.offsetHeight
-    )
-      return;
-    setPage((prevPage) => prevPage + 1);
-  };
-
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [handleScroll]);
+  console.log("users", data.length);
 
   return (
     <Container>
-      {users.map((user) => {
+      {data.map((user) => {
         return (
           <User
             key={user.id}
