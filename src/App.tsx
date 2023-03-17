@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useState } from "react";
 import { createGlobalStyle } from "styled-components";
+import Cookies from "js-cookie";
 
 // reset css and global styles
 const GlobalStyles = createGlobalStyle`
@@ -66,6 +67,11 @@ import { Users, UniqueUser } from "./pages";
 const PAGE_NUMBER = 1;
 
 function App() {
+  Cookies.set("PLACEIMGSESS", "cookie-value", {
+    sameSite: "none",
+    secure: true,
+  });
+
   //
   const [page, setPage] = useState(PAGE_NUMBER);
   const [breadcrumbs, setBreadcrumbs] = useState<breadcrumbsProps[]>([]);

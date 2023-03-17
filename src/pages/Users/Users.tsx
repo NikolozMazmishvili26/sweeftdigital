@@ -58,8 +58,6 @@ function Users({
     setPage
   );
 
-  console.log("users", data.length);
-
   return (
     <Container>
       {data.map((user) => {

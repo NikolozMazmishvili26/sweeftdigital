@@ -43,8 +43,6 @@ function Friends({
     setPage
   );
 
-  console.log("friends", data.length);
-
   return (
     <FriendsContainer>
       <Breadcrumbs>
